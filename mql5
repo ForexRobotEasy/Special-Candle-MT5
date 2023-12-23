@@ -1,0 +1,110 @@
+
+// Special Candle MT5 Indicator
+// Developer: Forex Robot Easy Team
+// Developer's Site: forexroboteasy.com
+
+// Import necessary libraries
+#include <Trade\Trade.mqh>
+#include <Indicators\Ichimoku.mqh>
+
+// Define constants
+#define TIMEFRAME_30M 30
+#define TIMEFRAME_H1 60
+
+// Define currency pairs for analysis
+string[] currencyPairs30M = {'CADJPY', 'CHFJPY', 'USDJPY', 'NZDJPY', 'AUDJPY', 'EURUSD', 'EURGBP'};
+string[] currencyPairsH1 = {'GBPUSD', 'GBPNZD', 'GBPAUD', 'USDCAD', 'USDCHF', 'USDJPY', 'EURAUD'};
+
+// Initialize objects
+CTrade trade;
+CIchimoku ichimoku;
+
+// Function to analyze and identify strong crosses on specified currency pairs for respective timeframes
+void analyzeStrongCrosses()
+{
+    // Loop through currency pairs for 30-minute timeframe
+    for(int i=0; i<currencyPairs30M.length; i++)
+    {
+        string currencyPair = currencyPairs30M[i];
+        
+        // Set chart symbol and timeframe
+        ChartSetSymbolPeriod(0, currencyPair, TIMEFRAME_30M);
+        
+        // Calculate Ichimoku indicator values
+        double tenkanSen30M = ichimoku.Init(Symbol(), TIMEFRAME_30M, 9, 26, 52, MODE_TENKANSEN);
+        double kijunSen30M = ichimoku.Init(Symbol(), TIMEFRAME_30M, 9, 26, 52, MODE_KIJUNSEN);
+        
+        // Check for strong crosses
+        if(tenkanSen30M > kijunSen30M)
+        {
+            // Perform necessary actions for strong cross
+            // ...
+        }
+    }
+    
+    // Loop through currency pairs for 1-hour timeframe
+    for(int i=0; i<currencyPairsH1.length; i++)
+    {
+        string currencyPair = currencyPairsH1[i];
+        
+        // Set chart symbol and timeframe
+        ChartSetSymbolPeriod(0, currencyPair, TIMEFRAME_H1);
+        
+        // Calculate Ichimoku indicator values
+        double tenkanSenH1 = ichimoku.Init(Symbol(), TIMEFRAME_H1, 9, 26, 52, MODE_TENKANSEN);
+        double kijunSenH1 = ichimoku.Init(Symbol(), TIMEFRAME_H1, 9, 26, 52, MODE_KIJUNSEN);
+        
+        // Check for strong crosses
+        if(tenkanSenH1 > kijunSenH1)
+        {
+            // Perform necessary actions for strong cross
+            // ...
+        }
+    }
+}
+
+// Function to detect and highlight powerful Tenkunsen and Kijunsen crosses
+void detectPowerfulCrosses()
+{
+    // Calculate Ichimoku indicator values
+    double tenkanSen = ichimoku.Init(Symbol(), 0, 9, 26, 52, MODE_TENKANSEN);
+    double kijunSen = ichimoku.Init(Symbol(), 0, 9, 26, 52, MODE_KIJUNSEN);
+    
+    // Check for powerful crosses
+    if(tenkanSen > kijunSen)
+    {
+        // Perform necessary actions for powerful cross
+        // ...
+    }
+}
+
+// Function to calculate and display relevant indicators and signals based on Ichimoku strategy
+void calculateIndicators()
+{
+    // Calculate Ichimoku indicator values
+    double tenkanSen = ichimoku.Init(Symbol(), 0, 9, 26, 52, MODE_TENKANSEN);
+    double kijunSen = ichimoku.Init(Symbol(), 0, 9, 26, 52, MODE_KIJUNSEN);
+    double senkouSpanA = ichimoku.Init(Symbol(), 0, 9, 26, 52, MODE_SENKOUSPANA);
+    double senkouSpanB = ichimoku.Init(Symbol(), 0, 9, 26, 52, MODE_SENKOUSPANB);
+    double chikouSpan = ichimoku.Init(Symbol(), 0, 9, 26, 52, MODE_CHIKOUSPAN);
+    
+    // Display relevant indicators and signals
+    Print('Tenkan Sen: ', tenkanSen);
+    Print('Kijun Sen: ', kijunSen);
+    Print('Senkou Span A: ', senkouSpanA);
+    Print('Senkou Span B: ', senkouSpanB);
+    Print('Chikou Span: ', chikouSpan);
+}
+
+// Entry point of the program
+void OnStart()
+{
+    // Analyze and identify strong crosses
+    analyzeStrongCrosses();
+    
+    // Detect and highlight powerful crosses
+    detectPowerfulCrosses();
+    
+    // Calculate and display relevant indicators and signals
+    calculateIndicators();
+}
